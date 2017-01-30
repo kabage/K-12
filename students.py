@@ -1,6 +1,7 @@
 from personaldetails import PersonalDetails
 import peewee
 from teachers import Teacher
+
 def main():
     print "running as standalone"
 
@@ -77,21 +78,3 @@ class StudentDetails(PersonalDetails):
 
       return len(student_count)
 
-
-x=Teacher.select().where(Teacher.first_name == 'edward').get()
-print x.first_name
-student_details=StudentDetails()
-student_details.first_name="sfs5df"
-student_details.second_name="sf5df"
-student_details.grade_level="rgw5rgr"
-student_details.gpa=50
-student_details.teacher_object= Teacher.select().where(Teacher.first_name == 'edward').get()
-student_details.save_details()
-
-
-# query = Student.select().where(Student.first_name == 'sfs5df')
-# for student in query:
-#   print student.first_name, student.teacher.first_name
-
-student_details=StudentDetails()
-print student_details.student_count("rgw5rgr",3)

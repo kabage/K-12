@@ -1,5 +1,6 @@
 import peewee
 from personaldetails import PersonalDetails
+
 def main():
     print "teacher's console"
 
