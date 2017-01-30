@@ -67,13 +67,11 @@ class StudentDetails(PersonalDetails):
       finally:
         student_object= Student(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level,teacher_name=self.teacher_name)
         student_object.save()
-        
             
-      
 
-student_details=StudentDetails()
-student_details.first_name="sfs5df"
-student_details.second_name="sf5df"
-student_details.grade_level="rgw5rgr"
-student_details.teacher_name="rgwr5gr"
-student_details.save_details()
+# student_details=StudentDetails()
+# student_details.first_name="sfs5df"
+# student_details.second_name="sf5df"
+# student_details.grade_level="rgw5rgr"
+# student_details.teacher_name="rgwr5gr"
+# student_details.save_details()
