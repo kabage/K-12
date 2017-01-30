@@ -29,8 +29,12 @@ def create_student_record(school_name):
     pass
 
 def create_teacher_record(school_name):
-    pass
-
+    
+    teacher_details=TeacherDetails()
+    teacher_details.first_name="edward"
+    teacher_details.second_name="mwangi"
+    teacher_details.grade_level="g1"
+    teacher_details.save_details()
 
 
 if __name__=='__main__':

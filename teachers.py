@@ -27,25 +27,22 @@ class Teacher(peewee.Model):
 
 class TeacherDetails(PersonalDetails):
 
+
     def __init__(self):
 
         self._students=None
+        
+
         PersonalDetails.__init__(self)
 
-    # @property
-    # def students(self):
-    #     """ retrieves students assigned to a teacher"""
-    #     print "Get students"
-    #     return self._students
-
-    # @students.setter
-    # def students(self, students):
-    #     """ sets students to be assigned to teacher"""
-    #     print "Set students"
-    #     self._students=students
+    def teachers_exist(self):
+        teachers_available=Teacher.select()
+        if len(teachers_available) >0:
+            return True
+        else:
+            return False
     
-    
-    def  save_details(self):
+    def save_details(self):
 
         database.connect()
         try:
@@ -55,13 +52,19 @@ class TeacherDetails(PersonalDetails):
         else:
             print "table created successfully"    
         finally:
-            teacher_object= Teacher(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level,students=self.students)
+            teacher_object= Teacher(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level)
             teacher_object.save()
-    
-# teacher_details=TeacherDetails()
-# teacher_details.students="dfgerg"
-# teacher_details.first_name="sfsdf"
-# teacher_details.second_name="sfdf"
-# teacher_details.grade_level="rgwrg666r"
-# teacher_details.save_details()
+
+    def retrieve_all_teacher_details(self):
+        for teacher in Teacher.select().where(Teacher.first_name == 'edward'):
+            print teacher.second_name
+
+    def teachers_in_grade( self, grade_level):
+
+        teachers_in_grade=[]
+        for teacher in Teacher.select().where(Teacher.grade_level == grade_level):
+            teachers_in_grade.append(teacher.first_name +" "+teacher.second_name)
+            
+        return teachers_in_grade
+
 

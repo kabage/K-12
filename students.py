@@ -15,7 +15,8 @@ class Student(peewee.Model):
     first_name= peewee.CharField()
     second_name= peewee.CharField()
     grade_level= peewee.CharField()
-    teacher_name=peewee.ForeignKeyField(Teacher, related_name='students_assigned')  
+    gpa=peewee.IntegerField()
+    teacher=peewee.ForeignKeyField(Teacher, related_name='students')  
 
     class Meta:
         database=database   
@@ -28,7 +29,7 @@ class StudentDetails(PersonalDetails):
         # There can't be any students if Teachers arent present
         PersonalDetails.__init__(self)
         self._gpa = None
-        self._teacher_name = None
+        self._teacher_object = None
 
     @property
     def gpa(self):
@@ -44,16 +45,16 @@ class StudentDetails(PersonalDetails):
       
 
     @property
-    def teacher_name(self):
+    def teacher_object(self):
        """ retrieves student teacher name"""
        print "Get student teacher name"
-       return self._teacher_name
+       return self._teacher_object
 
-    @teacher_name.setter
-    def teacher_name(self, teacher_name):
+    @teacher_object.setter
+    def teacher_object(self, teacher):
        """ sets student teacher name"""
        print "Set student teacher name"
-       self._teacher_name=teacher_name
+       self._teacher_object=teacher
 
     def save_details(self):
 
@@ -65,13 +66,32 @@ class StudentDetails(PersonalDetails):
       else:
         print "table created succcessfully"
       finally:
-        student_object= Student(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level,teacher_name=self.teacher_name)
-        student_object.save()
-            
 
+        student_object= Student(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level,gpa=self.gpa,teacher=self.teacher_object)
+        student_object.save()
+    
+    def student_count(self,grade_level,teacher_id):
+      student_count=Student.select().where(Student.grade_level == grade_level).where(Student.teacher_id==teacher_id)
+      if len(student_count) <10:
+        print "less than 10"
+
+      return len(student_count)
+
+
+x=Teacher.select().where(Teacher.first_name == 'edward').get()
+print x.first_name
 student_details=StudentDetails()
 student_details.first_name="sfs5df"
 student_details.second_name="sf5df"
 student_details.grade_level="rgw5rgr"
-student_details.teacher_name=6
+student_details.gpa=50
+student_details.teacher_object= Teacher.select().where(Teacher.first_name == 'edward').get()
 student_details.save_details()
+
+
+# query = Student.select().where(Student.first_name == 'sfs5df')
+# for student in query:
+#   print student.first_name, student.teacher.first_name
+
+student_details=StudentDetails()
+print student_details.student_count("rgw5rgr",3)
