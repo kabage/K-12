@@ -1,6 +1,6 @@
 from personaldetails import PersonalDetails
 import peewee
-
+from teachers import Teacher
 def main():
     print "running as standalone"
 
@@ -15,7 +15,7 @@ class Student(peewee.Model):
     first_name= peewee.CharField()
     second_name= peewee.CharField()
     grade_level= peewee.CharField()
-    teacher_name=peewee.CharField()  
+    teacher_name=peewee.ForeignKeyField(Teacher, related_name='students_assigned')  
 
     class Meta:
         database=database   
@@ -69,9 +69,9 @@ class StudentDetails(PersonalDetails):
         student_object.save()
             
 
-# student_details=StudentDetails()
-# student_details.first_name="sfs5df"
-# student_details.second_name="sf5df"
-# student_details.grade_level="rgw5rgr"
-# student_details.teacher_name="rgwr5gr"
-# student_details.save_details()
+student_details=StudentDetails()
+student_details.first_name="sfs5df"
+student_details.second_name="sf5df"
+student_details.grade_level="rgw5rgr"
+student_details.teacher_name=6
+student_details.save_details()

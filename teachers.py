@@ -19,7 +19,7 @@ class Teacher(peewee.Model):
     first_name= peewee.CharField()
     second_name= peewee.CharField()
     grade_level= peewee.CharField()
-    students=peewee.CharField()  
+     
 
     class Meta:
         database=database    
@@ -32,17 +32,17 @@ class TeacherDetails(PersonalDetails):
         self._students=None
         PersonalDetails.__init__(self)
 
-    @property
-    def students(self):
-        """ retrieves students assigned to a teacher"""
-        print "Get students"
-        return self._students
+    # @property
+    # def students(self):
+    #     """ retrieves students assigned to a teacher"""
+    #     print "Get students"
+    #     return self._students
 
-    @students.setter
-    def students(self, students):
-        """ sets students to be assigned to teacher"""
-        print "Set students"
-        self._students=students
+    # @students.setter
+    # def students(self, students):
+    #     """ sets students to be assigned to teacher"""
+    #     print "Set students"
+    #     self._students=students
     
     
     def  save_details(self):
@@ -58,10 +58,10 @@ class TeacherDetails(PersonalDetails):
             teacher_object= Teacher(first_name=self.first_name,second_name=self.second_name,grade_level=self.grade_level,students=self.students)
             teacher_object.save()
     
-teacher_details=TeacherDetails()
-teacher_details.students="dfgerg"
-teacher_details.first_name="sfsdf"
-teacher_details.second_name="sfdf"
-teacher_details.grade_level="rgwrg666r"
-teacher_details.save_details()
+# teacher_details=TeacherDetails()
+# teacher_details.students="dfgerg"
+# teacher_details.first_name="sfsdf"
+# teacher_details.second_name="sfdf"
+# teacher_details.grade_level="rgwrg666r"
+# teacher_details.save_details()
 
