@@ -3,7 +3,7 @@ from personaldetails import PersonalDetails
 
 
 def main():
-    print "teacher's console"
+    print ""
 
 
 if __name__ == '__main__':
@@ -14,7 +14,7 @@ database = peewee.SqliteDatabase(school_name + ".db")
 
 
 class Teacher(peewee.Model):
-
+    """This class defines the teacher database model"""
     # gradelevel K-12
     # Teachers can have multiple students
     # There cant be any students if Teachers arent present
@@ -28,7 +28,7 @@ class Teacher(peewee.Model):
 
 
 class TeacherDetails(PersonalDetails):
-
+    """TeachersDetails inherits the basic fields from PersonalDetails"""
     def __init__(self):
 
         self._students = None
@@ -36,7 +36,7 @@ class TeacherDetails(PersonalDetails):
         PersonalDetails.__init__(self)
 
     def teachers_exist(self):
-
+        """Query checks if teachers exist"""
         if Teacher.table_exists():
             teachers_available = Teacher.select().count()
             print teachers_available
@@ -48,7 +48,7 @@ class TeacherDetails(PersonalDetails):
             return False
 
     def save_details(self):
-
+        """Saves teacher details to the database"""
         database.connect()
         try:
             Teacher.create_table()
@@ -61,12 +61,9 @@ class TeacherDetails(PersonalDetails):
                 first_name=self.first_name, second_name=self.second_name, grade_level=self.grade_level)
             teacher_object.save()
 
-    def retrieve_all_teacher_details(self):
-        for teacher in Teacher.select().where(Teacher.first_name == 'edward'):
-            print teacher.second_name
 
     def teachers_in_grade(self, grade_level):
-
+        """Query returns the teachers in a particular grade"""
         teachers_in_grade = []
         for teacher in Teacher.select().where(Teacher.grade_level == grade_level):
             teachers_in_grade.append(teacher)

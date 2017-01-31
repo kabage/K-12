@@ -4,6 +4,8 @@ from students import *
 
 
 def main():
+
+    """program entry point"""
     print "K-12\n"
 
     school_name = raw_input("Enter School Name: \n")
@@ -35,7 +37,7 @@ def main():
 
 
 def create_teacher_record(personal_details):
-
+    """saves teacher data from user, parsed from personal_details"""
     teacher_details = TeacherDetails()
     teacher_details.first_name = personal_details[0]
     teacher_details.second_name = personal_details[1]
@@ -44,7 +46,7 @@ def create_teacher_record(personal_details):
 
 
 def create_student_record(personal_details):
-
+    """populates student model and validates student data"""
     teacher_details = TeacherDetails()
     if teacher_details.teachers_exist():
         teachers_in_grade = teacher_details.teachers_in_grade(
@@ -74,7 +76,7 @@ def create_student_record(personal_details):
 
 
 def save_student_record(personal_details, selected_teacher):
-
+    """saves student record to database"""
     student_details.first_name = personal_details[0]
     student_details.second_name = personal_details[1]
     student_details.grade_level = personal_details[2]
@@ -84,7 +86,7 @@ def save_student_record(personal_details, selected_teacher):
 
 
 def get_personal_details():
-
+    """Prompts user to enter the basic details for teachers and students"""
     personal_details = []
 
     first_name = raw_input("Enter first name: \n")
@@ -108,6 +110,7 @@ def get_personal_details():
 
 
 def input_valid(value):
+    """Ensures user input is not null"""
     if len(value) == 0 or value == None:
         print "Value is invalid"
         return False

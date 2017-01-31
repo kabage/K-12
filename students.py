@@ -4,7 +4,7 @@ from teachers import Teacher
 
 
 def main():
-    print "running as standalone"
+    print ""
 
 if __name__ == '__main__':
     main()
@@ -14,7 +14,7 @@ database = peewee.SqliteDatabase(school_name + ".db")
 
 
 class Student(peewee.Model):
-
+    """The student has 4 fields. There's a one to many relationship between teachers and students"""
     first_name = peewee.CharField()
     second_name = peewee.CharField()
     grade_level = peewee.CharField()
@@ -27,6 +27,7 @@ class Student(peewee.Model):
 
 
 class StudentDetails(PersonalDetails):
+    """student inherits basic individual attribute from PersonalDetails"""
 
     def __init__(self):
         # gradelevel K-12
@@ -61,7 +62,7 @@ class StudentDetails(PersonalDetails):
         self._teacher_object = teacher
 
     def save_details(self):
-
+        """saves student data to database"""
         database.connect()
         try:
             Student.create_table()
@@ -76,6 +77,7 @@ class StudentDetails(PersonalDetails):
             student_object.save()
 
     def student_count(self, grade_level, teacher_id):
+        """Query ensures the teacher has a student count of less than 10 before assigning new student"""
         student_count = Student.select().where(Student.grade_level == grade_level).where(
             Student.teacher_id == teacher_id).count()
         if student_count < 10:

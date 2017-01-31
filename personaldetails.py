@@ -1,5 +1,5 @@
 def main():
-    print "teacher's console"
+    print ""
 
 
 if __name__ == '__main__':
@@ -13,8 +13,8 @@ class PersonalDetails(object):
         # Teachers can have multiple students
         # There cant be any students if Teachers arent present
 
-        self.gradeleveloptions = ["kindergarten", "G1", "G2", "G3",
-                                  "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", ]
+        self.gradeleveloptions = ["k", "g1", "g2", "g3",
+                                  "g4", "g5", "g6", "g7", "g8", "g9", "g10", "g11", "g12", ]
 
         self._first_name = None
         self._second_name = None
