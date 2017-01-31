@@ -48,7 +48,8 @@ def create_teacher_record(personal_details):
 def create_student_record(personal_details):
     """populates student model and validates student data"""
     teacher_details = TeacherDetails()
-    if teacher_details.teachers_exist():
+    teachers_exist=teacher_details.teachers_exist()
+    if teachers_exist:
         teachers_in_grade = teacher_details.teachers_in_grade(
             personal_details[2])
         if len(teachers_in_grade) == 0:
@@ -56,27 +57,29 @@ def create_student_record(personal_details):
         else:
             print "\n These teachers are available for this grade, choose one:\n"
             for index, teacher in enumerate(teachers_in_grade):
-                print str(index) + ". " + teacher.first_name + " " + teacher.second_name
-
-            teacher_position = raw_input("Enter teacher index: \n")
-            selected_teacher = teachers_in_grade[int(teacher_position)]
-            if input_valid(teacher_position):
-                gpa = raw_input("Enter GPA: \n")
-
-                student_details = StudentDetails()
-                if student_details.student_count(personal_details[2], selected_teacher.id):
-                    save_student_record(personal_details, selected_teacher)
-                else:
-                    print "Record not created. Teacher already has 10 students."
-
+                print str(index)+". "+teacher.first_name+" "+teacher.second_name
+                complete_student_record(teachers_in_grade,personal_details)
             else:
                 return None
     else:
         print "Teachers unavailable. Record cannot be created "
 
+def complete_student_record(teachers_in_grade,personal_details):
+    teacher_position = raw_input("Enter teacher index: \n")
+    selected_teacher = teachers_in_grade[int(teacher_position)]
+    if input_valid(teacher_position):
+        gpa = raw_input("Enter GPA: \n")
 
-def save_student_record(personal_details, selected_teacher):
+        student_details = StudentDetails()
+        teacher_available=student_details.student_count(personal_details[2], selected_teacher.id)
+        if teacher_available:
+            save_student_record(personal_details, selected_teacher,gpa)
+        else:
+            print "Record not created. Teacher already has 10 students."
+
+def save_student_record(personal_details, selected_teacher,gpa):
     """saves student record to database"""
+    student_details=StudentDetails()
     student_details.first_name = personal_details[0]
     student_details.second_name = personal_details[1]
     student_details.grade_level = personal_details[2]
