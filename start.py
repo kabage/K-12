@@ -53,11 +53,18 @@ def create_student_record(personal_details):
         else:
             print "\n These teachers are available for this grade, choose one:\n" 
             for index, teacher in enumerate(teachers_in_grade):
-                print str(index)+". "+ teacher[1]+" "+teacher[2]
+                print str(index)+". "+ teacher[1]+" "+teacher[2]  +" "+ str(teacher[0].id)
             teacher_position = raw_input("Enter teacher index: \n")
             if input_valid(teacher_position):
                 gpa=raw_input("Enter GPA: \n" )
 
+                student_details=StudentDetails()
+                student_details.first_name=personal_details[0]
+                student_details.second_name=personal_details[1]
+                student_details.grade_level=personal_details[2]
+                student_details.gpa=int(gpa)
+                student_details.teacher_object=teachers_in_grade[int(teacher_position)][0]
+                student_details.save_details()
 
             else:
                 return None
@@ -87,7 +94,7 @@ def get_personal_details():
             return None
     else:
         return None
-        
+
 
 def input_valid(value):
     if len(value) ==0 or value==None:
