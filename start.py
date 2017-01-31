@@ -23,7 +23,7 @@ def main():
 
         if selected_operation=="1":
             print "create student record"
-            create_student_record()
+            create_student_record(get_personal_details())
 
         elif selected_operation=="2":
             print "create teacher record"
@@ -42,20 +42,25 @@ def create_teacher_record(personal_details):
     teacher_details.grade_level=personal_details[2]
     teacher_details.save_details()
 
-def create_student_record():
+def create_student_record(personal_details):
+
     teacher_details=TeacherDetails()
+    teachers_in_grade=teacher_details.teachers_in_grade(personal_details[2])
 
     if teacher_details.teachers_exist:
+        if len(teachers_in_grade) ==0:
+            print "No teachers available for this grade"
+        else:
+            print "\n These teachers are available for this grade, choose one:\n" 
+            for index, teacher in enumerate(teachers_in_grade):
+                print str(index)+". "+ teacher[1]+" "+teacher[2]
+            teacher_position = raw_input("Enter teacher index: \n")
+            if input_valid(teacher_position):
+                gpa=raw_input("Enter GPA: \n" )
 
-        print "teachers exist"
-        student_details=StudentDetails()
-        student_details.first_name="A"
-        student_details.second_name="A"
-        student_details.grade_level="A"
-        student_details.gpa=99
-        student_details.teacher_object=Teacher.select().get()
-        student_details.save_details()
 
+            else:
+                return None
     else:
         print "Teachers unavailable"
 
@@ -82,8 +87,7 @@ def get_personal_details():
             return None
     else:
         return None
-
-    
+        
 
 def input_valid(value):
     if len(value) ==0 or value==None:

@@ -16,6 +16,7 @@ class Student(peewee.Model):
     first_name= peewee.CharField()
     second_name= peewee.CharField()
     grade_level= peewee.CharField()
+    
     gpa=peewee.IntegerField()
     teacher=peewee.ForeignKeyField(Teacher, related_name='students')  
 

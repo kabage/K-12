@@ -1,5 +1,3 @@
-
-
 def main():
     print "teacher's console"
 

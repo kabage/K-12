@@ -64,7 +64,7 @@ class TeacherDetails(PersonalDetails):
 
         teachers_in_grade=[]
         for teacher in Teacher.select().where(Teacher.grade_level == grade_level):
-            teachers_in_grade.append(teacher.first_name +" "+teacher.second_name)
+            teachers_in_grade.append((Teacher.id,teacher.first_name,teacher.second_name))
             
         return teachers_in_grade
 
