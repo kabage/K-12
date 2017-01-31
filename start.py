@@ -58,9 +58,8 @@ def create_student_record(personal_details):
             print "\n These teachers are available for this grade, choose one:\n"
             for index, teacher in enumerate(teachers_in_grade):
                 print str(index)+". "+teacher.first_name+" "+teacher.second_name
-                complete_student_record(teachers_in_grade,personal_details)
-            else:
-                return None
+            complete_student_record(teachers_in_grade,personal_details)  
+           
     else:
         print "Teachers unavailable. Record cannot be created "
 
