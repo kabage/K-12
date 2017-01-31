@@ -40,25 +40,21 @@ class StudentDetails(PersonalDetails):
     @property
     def gpa(self):
         """ retrieves student gpa"""
-        print "Get gpa"
         return self._gpa
 
     @gpa.setter
     def gpa(self, gpa):
-        """ sets student gpa"""
-        print "Set gpa"
+        """ sets student gpa"""   
         self._gpa = gpa
 
     @property
     def teacher_object(self):
         """ retrieves student teacher name"""
-        print "Get student teacher name"
         return self._teacher_object
 
     @teacher_object.setter
     def teacher_object(self, teacher):
         """ sets student teacher name"""
-        print "Set student teacher name"
         self._teacher_object = teacher
 
     def save_details(self):
