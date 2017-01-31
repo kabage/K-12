@@ -73,9 +73,11 @@ class StudentDetails(PersonalDetails):
         student_object.save()
     
     def student_count(self,grade_level,teacher_id):
-      student_count=Student.select().where(Student.grade_level == grade_level).where(Student.teacher_id==teacher_id)
-      if len(student_count) <10:
-        print "less than 10"
-
-      return len(student_count)
+      student_count=Student.select().where(Student.grade_level == grade_level).where(Student.teacher_id==teacher_id).count()
+      if student_count <10:
+        print "Count is" +str(student_count) 
+        return True
+       
+      else:
+        return False
 

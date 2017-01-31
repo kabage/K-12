@@ -37,11 +37,17 @@ class TeacherDetails(PersonalDetails):
         PersonalDetails.__init__(self)
 
     def teachers_exist(self):
-        teachers_available=Teacher.select()
-        if len(teachers_available) >0:
-            return True
+
+        if  Teacher.table_exists():
+            teachers_available=Teacher.select().count()
+            print teachers_available
+            if teachers_available>0:
+                return True
+            else:
+                return False
         else:
             return False
+        
     
     def save_details(self):
 
@@ -64,7 +70,7 @@ class TeacherDetails(PersonalDetails):
 
         teachers_in_grade=[]
         for teacher in Teacher.select().where(Teacher.grade_level == grade_level):
-            teachers_in_grade.append((teacher,teacher.first_name,teacher.second_name))
+            teachers_in_grade.append(teacher)
             
         return teachers_in_grade
 

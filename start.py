@@ -1,7 +1,7 @@
 import peewee
 from teachers import *
 from students import *
-import sys
+
 
 def main():
     print "K-12\n"
@@ -45,32 +45,40 @@ def create_teacher_record(personal_details):
 def create_student_record(personal_details):
 
     teacher_details=TeacherDetails()
-    teachers_in_grade=teacher_details.teachers_in_grade(personal_details[2])
-
-    if teacher_details.teachers_exist:
+    if teacher_details.teachers_exist():
+        teachers_in_grade=teacher_details.teachers_in_grade(personal_details[2])
         if len(teachers_in_grade) ==0:
-            print "No teachers available for this grade"
+            print "Record not created. No teachers available for this grade"
         else:
             print "\n These teachers are available for this grade, choose one:\n" 
             for index, teacher in enumerate(teachers_in_grade):
-                print str(index)+". "+ teacher[1]+" "+teacher[2]  +" "+ str(teacher[0].id)
+                print str(index)+". "+ teacher.first_name+" "+teacher.second_name
+
             teacher_position = raw_input("Enter teacher index: \n")
+            selected_teacher=teachers_in_grade[int(teacher_position)]
             if input_valid(teacher_position):
                 gpa=raw_input("Enter GPA: \n" )
 
                 student_details=StudentDetails()
-                student_details.first_name=personal_details[0]
-                student_details.second_name=personal_details[1]
-                student_details.grade_level=personal_details[2]
-                student_details.gpa=int(gpa)
-                student_details.teacher_object=teachers_in_grade[int(teacher_position)][0]
-                student_details.save_details()
+                if student_details.student_count(personal_details[2],selected_teacher.id):
+                    save_student_record(personal_details,selected_teacher)                    
+                else:
+                    print "Record not created. Teacher already has 10 students."
+                
 
             else:
                 return None
     else:
-        print "Teachers unavailable"
+        print "Teachers unavailable. Record cannot be created "
 
+def save_student_record(personal_details,selected_teacher):
+
+    student_details.first_name=personal_details[0]
+    student_details.second_name=personal_details[1]
+    student_details.grade_level=personal_details[2]
+    student_details.gpa=int(gpa)
+    student_details.teacher_object=selected_teacher
+    student_details.save_details()
 
 def get_personal_details():
 
