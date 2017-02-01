@@ -1,7 +1,6 @@
 import peewee
 from personaldetails import PersonalDetails
 
-
 def main():
     print ""
 
@@ -9,9 +8,8 @@ def main():
 if __name__ == '__main__':
     main()
 
-school_name = "SCHOOLX"
+school_name="school"
 database = peewee.SqliteDatabase(school_name + ".db")
-
 
 class Teacher(peewee.Model):
     """This class defines the teacher database model"""
@@ -22,6 +20,7 @@ class Teacher(peewee.Model):
     first_name = peewee.CharField()
     second_name = peewee.CharField()
     grade_level = peewee.CharField()
+    school_name=peewee.CharField()
 
     class Meta:
         database = database
@@ -53,13 +52,14 @@ class TeacherDetails(PersonalDetails):
         try:
             Teacher.create_table()
         except peewee.OperationalError, e:
-            print "table exists " + e.message
+            print "table found " + e.message
         else:
             print "table created successfully"
         finally:
             teacher_object = Teacher(
-                first_name=self.first_name, second_name=self.second_name, grade_level=self.grade_level)
+                first_name=self.first_name, second_name=self.second_name, grade_level=self.grade_level,school_name=self.school_name)
             teacher_object.save()
+            print "Record saved"
 
 
     def teachers_in_grade(self, grade_level):

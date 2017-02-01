@@ -1,7 +1,9 @@
 import peewee
 from teachers import *
-from students import *
+from students import * 
 
+
+school_name=""
 
 def main():
 
@@ -10,10 +12,9 @@ def main():
 
     school_name = raw_input("Enter School Name: \n")
 
-    if school_name == None:
+    if school_name == None or school_name=="":
         print "School name can't be empty\n"
     else:
-        database = peewee.SqliteDatabase(school_name + ".db")
 
         print "\nSelected School is " + school_name
         print "Please select an option\n"
@@ -24,28 +25,29 @@ def main():
 
         if selected_operation == "1":
             print "create student record"
-            create_student_record(get_personal_details())
+            create_student_record(school_name,get_personal_details())
 
         elif selected_operation == "2":
             print "create teacher record"
             try:
-                create_teacher_record(get_personal_details())
+                create_teacher_record(school_name,get_personal_details())
             except TypeError, e:
                 print "Input Invalid " + "Missing field"
         else:
             print "Operation not supported"
 
 
-def create_teacher_record(personal_details):
+def create_teacher_record(school_name,personal_details):
     """saves teacher data from user, parsed from personal_details"""
     teacher_details = TeacherDetails()
     teacher_details.first_name = personal_details[0]
     teacher_details.second_name = personal_details[1]
     teacher_details.grade_level = personal_details[2]
+    teacher_details.school_name=school_name
     teacher_details.save_details()
 
 
-def create_student_record(personal_details):
+def create_student_record(school_name,personal_details):
     """populates student model and validates student data"""
     teacher_details = TeacherDetails()
     teachers_exist=teacher_details.teachers_exist()
@@ -55,15 +57,15 @@ def create_student_record(personal_details):
         if len(teachers_in_grade) == 0:
             print "Record not created. No teachers available for this grade"
         else:
-            print "\n These teachers are available for this grade, choose one:\n"
+            print "\n These teachers are available for this grade, choose one(enter index):\n"
             for index, teacher in enumerate(teachers_in_grade):
                 print str(index)+". "+teacher.first_name+" "+teacher.second_name
-            complete_student_record(teachers_in_grade,personal_details)  
+            complete_student_record(school_name,teachers_in_grade,personal_details)  
            
     else:
         print "Teachers unavailable. Record cannot be created "
 
-def complete_student_record(teachers_in_grade,personal_details):
+def complete_student_record(school_name,teachers_in_grade,personal_details):
     teacher_position = raw_input("Enter teacher index: \n")
     selected_teacher = teachers_in_grade[int(teacher_position)]
     if input_valid(teacher_position):
@@ -72,16 +74,17 @@ def complete_student_record(teachers_in_grade,personal_details):
         student_details = StudentDetails()
         teacher_available=student_details.student_count(personal_details[2], selected_teacher.id)
         if teacher_available:
-            save_student_record(personal_details, selected_teacher,gpa)
+            save_student_record(school_name,personal_details, selected_teacher,gpa)
         else:
             print "Record not created. Teacher already has 10 students."
 
-def save_student_record(personal_details, selected_teacher,gpa):
+def save_student_record(school_name,personal_details, selected_teacher,gpa):
     """saves student record to database"""
     student_details=StudentDetails()
     student_details.first_name = personal_details[0]
     student_details.second_name = personal_details[1]
     student_details.grade_level = personal_details[2]
+    student_details.school_name=school_name
     student_details.gpa = int(gpa)
     student_details.teacher_object = selected_teacher
     student_details.save_details()
@@ -97,7 +100,7 @@ def get_personal_details():
         if input_valid(second_name):
             grade_level = raw_input("Enter grade level: \n")
 
-            if input_valid(grade_level):
+            if input_valid(grade_level)and grade_is_valid(grade_level):
                 personal_details.append(first_name)
                 personal_details.append(second_name)
                 personal_details.append(grade_level)
@@ -119,6 +122,13 @@ def input_valid(value):
     else:
         return True
 
+def grade_is_valid(grade):
+    """Ensures the grade entered is between kindergarten and g12"""
+    personal_details=PersonalDetails()
+    if grade in personal_details.grade_level_options:
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
     main()
