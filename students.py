@@ -9,7 +9,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-school_name = "SCHOOLX"
+school_name ="school"
 database = peewee.SqliteDatabase(school_name + ".db")
 
 
@@ -18,6 +18,7 @@ class Student(peewee.Model):
     first_name = peewee.CharField()
     second_name = peewee.CharField()
     grade_level = peewee.CharField()
+    school_name=peewee.CharField()
 
     gpa = peewee.IntegerField()
     teacher = peewee.ForeignKeyField(Teacher, related_name='students')
@@ -63,21 +64,23 @@ class StudentDetails(PersonalDetails):
         try:
             Student.create_table()
         except peewee.OperationalError, e:
-            print "table exists " + e.message
+            print "table found " + e.message
         else:
             print "table created succcessfully"
         finally:
 
             student_object = Student(first_name=self.first_name, second_name=self.second_name,
-                                     grade_level=self.grade_level, gpa=self.gpa, teacher=self.teacher_object)
+                                     grade_level=self.grade_level, gpa=self.gpa, teacher=self.teacher_object,school_name=self.school_name)
             student_object.save()
+            print "Record Saved"
 
     def student_count(self, grade_level, teacher_id):
         """Query ensures the teacher has a student count of less than 10 before assigning new student"""
+        if Student.table_exists()==False:
+          Student.create_table()
         student_count = Student.select().where(Student.grade_level == grade_level).where(
             Student.teacher_id == teacher_id).count()
         if student_count < 10:
-            print "Count is" + str(student_count)
             return True
 
         else:
