@@ -1,7 +1,7 @@
 # K-12
 This is a tool that helps generate a K-12 school with students and teachers at every grade level.
 ## How to use.
-K-12 has one external dependancy .ie peewee as an orm for the sqlite database.
+K-12 has one external dependancy .ie peewee as an orm for the sqlite database. http://docs.peewee-orm.com/en/latest/
 To run K-12, install this dependacy and run start.py.
 ## Adding Records.
 When you run start.py, a console starts  prompting you to enter the school name.
